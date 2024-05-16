@@ -1,0 +1,78 @@
+<div class="container mt-3">
+    <div class="card text-dark bg-light mb-3">
+        <div class="card-header">
+            <strong>Generar Reporte</strong>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="reportForm">
+                <div class="container">
+                    <div class="row mb-3">
+                        <div class="col-3">
+                            <label class="text-muted">Nit</label>
+                            <input class="form-control mb-2" type="text" aria-label="default input example"
+                                formControlName="nit" maxlength="9">
+                            <div class="text-danger"
+                                *ngIf="reportForm.get('nit')?.hasError('required') && reportForm.get('nit')?.touched">
+                                <span>El campo es obligatorio</span>
+                            </div>
+                            <div class="text-danger" *ngIf="reportForm.get('nit')?.hasError('minlength')">
+                                <span>El nit debe ser de 9 digitos</span>
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <label class="text-muted">DV</label>
+                            <input class="form-control mb-2" type="text" aria-label="default input example"
+                                formControlName="digitVerification" maxlength="1"
+                                (focusout)="getValorationsByCompanie()">
+                            <div class="text-danger"
+                                *ngIf="reportForm.get('digitVerification')?.hasError('required') && reportForm.get('digitVerification')?.touched">
+                                <span>El campo es obligatorio</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label class="text-muted">Nombre</label>
+                            <input class="form-control mb-2" type="text" aria-label="default input example"
+                                formControlName="name" maxlength="1">
+                        </div>
+                        <div class="col-2">
+                            <label class="text-muted">Sector</label>
+                            <input class="form-control mb-2" type="text" aria-label="default input example"
+                                formControlName="sector" maxlength="1">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label class="text-muted">Fecha de Valoración</label>
+                            <select class="form-select" aria-label="Default select example" formControlName="date"
+                                (change)="filterPeriodicity()">
+                                <option [ngValue]="null" disabled>Seleccione</option>
+                                <option *ngFor="let date of datesOption?.data">{{date.date}}</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <label class="text-muted">Periodicidad</label>
+                            <select class="form-select" aria-label="Default select example"
+                                formControlName="periodicity">
+                                <option [ngValue]="null" disabled>Seleccione</option>
+                                <option *ngFor="let periodicity of periodicityOption">{{periodicity}}</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <label class="text-muted">Usuario</label>
+                            <select class="form-select" aria-label="Default select example" formControlName="email">
+                                <option [ngValue]="null" disabled>Seleccione</option>
+                                <option *ngFor="let email of email">{{email}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-success" type="button" [disabled]="reportForm.invalid"
+                    (click)="export()">Exportar</button>
+            </div>
+        </div>
+    </div>
+</div>

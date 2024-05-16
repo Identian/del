@@ -1,0 +1,8 @@
+pandas
+sqlalchemy
+python-dotenv
+jwt
+requests
+cryptography
+xlsxwriter
+mysql-connector-python

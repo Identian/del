@@ -1,0 +1,67 @@
+<div class="container mt-3">
+    <div class="card text-dark bg-light mb-3">
+        <div class="card-header">
+            <strong>Crear Empresa</strong>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="companieForm">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-4">
+                            <label class="text-muted">Nit</label>
+                            <input class="form-control mb-2" type="text" aria-label="default input example"
+                                formControlName="nit" maxlength="9">
+                            <div class="text-danger"
+                                *ngIf="companieForm.get('nit')?.hasError('required') && companieForm.get('nit')?.touched">
+                                <span>El campo es obligatorio</span>
+                            </div>
+                            <div class="text-danger" *ngIf="companieForm.get('nit')?.hasError('minlength')">
+                                <span>El nit debe ser de 9 digitos</span>
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <label class="text-muted">DV</label>
+                            <input class="form-control mb-2" type="text" aria-label="default input example"
+                                formControlName="digitVerification" maxlength="1" (focusout)="validateCompanie()">
+                            <div class="text-danger"
+                                *ngIf="companieForm.get('digitVerification')?.hasError('required') && companieForm.get('digitVerification')?.touched">
+                                <span>El campo es obligatorio</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-8">
+                            <label class="text-muted">Nombre</label>
+                            <input class="form-control mb-2" type="text" aria-label="default input example"
+                                formControlName="name">
+                            <div class="text-danger"
+                                *ngIf="companieForm.get('name')?.hasError('required') && companieForm.get('name')?.touched">
+                                <span>El campo es obligatorio</span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <label class="text-muted">Sector</label>
+                            <select class="form-select" formControlName="sector">
+                                <option [ngValue]="null" disabled>Seleccione</option>
+                                <option>Real</option>
+                                <option>Financiero</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <br>
+
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-success" type="button" [disabled]="companieForm.invalid"
+                    (click)="create()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

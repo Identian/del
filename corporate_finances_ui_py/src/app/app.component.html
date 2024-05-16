@@ -1,0 +1,9 @@
+<app-header *ngIf="showHead"></app-header>
+
+<ngx-spinner type="square-jelly-box"></ngx-spinner>
+
+<div class="wrapper">
+    <router-outlet></router-outlet>
+</div>
+
+<app-footer *ngIf="showHead"></app-footer>

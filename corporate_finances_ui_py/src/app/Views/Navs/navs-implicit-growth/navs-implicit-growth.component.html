@@ -1,0 +1,122 @@
+<ng-container>
+    <div class="d-grid gap-3">
+        <form [formGroup]="implicitGrowthForm" *ngIf="showList">
+            <div class="row p-2">
+                <div class="col-6">
+                    <select class="form-select" aria-label="Default select example" formControlName="accountPyg">
+                        <option [ngValue]="null" disabled>Seleccione</option>
+                        <option *ngFor="let account of accounts">{{account}}</option>
+                    </select>
+                </div>
+                <div class="col-5">
+                    <select class="form-select" aria-label="Default select example" formControlName="accountProportion">
+                        <option [ngValue]="null" disabled>Seleccione</option>
+                        <option *ngFor="let account of accountsComplete">{{account}}</option>
+                    </select>
+                </div>
+                <div class="col-1">
+                    <button class="btn btn-primary" [disabled]="!implicitGrowthForm.valid"
+                        (click)="search()">Buscar</button>
+                </div>
+            </div>
+        </form>
+        <div class="p-2" *ngIf="implicitGrowthResult && showList">
+            <table class="table table-striped table-bordered" aria-describedby="table-pyg">
+                <thead class="table-secondary">
+                    <tr>
+                        <th scope="col">Cuenta</th>
+                        <th scope="col" *ngFor="let date of profitAndLossData?.datesHistory">{{date}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{dataAccountPyg?.name}}</td>
+                        <td *ngFor="let value of dataAccountPyg?.values?.history">{{value.value| number : '1.2-2'}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{dataAccountProportion?.name}}</td>
+                        <td *ngFor="let value of dataAccountProportion?.values?.history">{{value.value | number :
+                            '1.2-2'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="implicitGrowthResult">
+            <div>
+                <h4>Variaciones</h4>
+                <table class="table table-striped table-bordered" aria-describedby="table-initial-subaccounts">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th scope="col">Cuenta</th>
+                            <th scope="col" *ngFor="let date of profitAndLossData?.datesHistory">{{date}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of implicitGrowthResult?.variations">
+                            <td>{{data.name}}</td>
+                            <td *ngFor="let value of data.value">{{value}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h4>Proporción</h4>
+                <table class="table table-striped table-bordered" aria-describedby="table-initial-subaccounts">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th scope="col">Cuenta</th>
+                            <th scope="col" *ngFor="let year of profitAndLossData?.datesHistory">{{year}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of implicitGrowthResult?.proportions">
+                            <td>{{data.name}}</td>
+                            <td *ngFor="let value of data.value">{{value}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h4>Estadísticas Descriptivas</h4>
+                <table class="table table-striped table-bordered" aria-describedby="table-initial-subaccounts">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th scope="col">Cuenta</th>
+                            <th scope="col">Promedio</th>
+                            <th scope="col">Mediana</th>
+                            <th scope="col">Desviación</th>
+                            <th scope="col">Min</th>
+                            <th scope="col">Max</th>
+                            <th scope="col">Beta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let value of implicitGrowthResult?.statistics">
+                            <td>
+                                {{value.account}}
+                            </td>
+                            <td>
+                                {{value.average}}
+                            </td>
+                            <td>
+                                {{value.median}}
+                            </td>
+                            <td>
+                                {{value.deviation}}
+                            </td>
+                            <td>
+                                {{value.min}}
+                            </td>
+                            <td>
+                                {{value.max}}
+                            </td>
+                            <td>
+                                {{value.beta}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</ng-container>

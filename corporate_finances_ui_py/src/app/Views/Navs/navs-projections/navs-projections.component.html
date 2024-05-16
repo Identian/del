@@ -1,0 +1,98 @@
+<div class="container">
+    <h4>Proyecciones</h4>
+    <form [formGroup]="projectionForm">
+        <div class="row">
+            <div class="col-3">
+                <label for="inputPassword5" class="form-label">¿Cuántos años desea proyectar?</label>
+                <input class="form-control" formControlName="year" type="number" (keyup)="addDateProjections()" />
+            </div>
+        </div>
+        <br>
+        <div class="table-responsive"
+            *ngIf="this.projectionForm.get('year')!.value != '' && getDatesProjection().length > 0 ">
+            <table class="table table-striped table-bordered" aria-describedby="table-initial-subaccounts"
+                id="table-projection">
+                <thead class="table-secondary">
+                    <tr>
+                        <th scope="col">Cuenta</th>
+                        <th scope="col">Método
+                            <a>
+                                <span (click)="helpEquation()" class="badge rounded-pill text bg-secondary">?</span>
+                            </a>
+                        </th>
+                        <th scope="col">Cuenta de Proyectar</th>
+                        <th scope="col" *ngFor="let dateHistory of getDatesHistory().value">
+                            {{ dateHistory }}
+                        </th>
+                        <th scope="col" *ngFor="let dateProjection of getDatesProjection().value">
+                            {{ dateProjection }}
+                        </th>
+                        <th scope="col">Explicación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container formArrayName="projection_data">
+                        <tr *ngFor="let projection of getProjections().controls; let projectionIndex = index"
+                            [formGroupName]="projectionIndex">
+                            <td>
+                                {{ projection.value.account }}
+                            </td>
+                            <td>
+                                <select class="form-select" aria-label="Default select example"
+                                    formControlName="method">
+                                    <option disabled="true">
+                                        Seleccione
+                                    </option>
+                                    <option *ngFor="let methodProjection of projectionMethods"
+                                        [ngValue]="methodProjection">
+                                        {{ methodProjection }}
+                                    </option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <fieldset
+                                    [disabled]="(projection.value.method == 'Tasa de crecimiento fija' || projection.value.method == 'Valor constante' || projection.value.method == 'Input' || projection.value.method == 'Cero') ? true:false">
+                                    <select class="form-select" aria-label="Default select example"
+                                        formControlName="accountProjector">
+                                        <option disabled="true">
+                                            Seleccione
+                                        </option>
+                                        <option *ngFor="let accountProjector of accountsComplete"
+                                            [ngValue]="accountProjector">
+                                            {{ accountProjector }}
+                                        </option>
+                                    </select>
+                                </fieldset>
+                            </td>
+                            <ng-container formGroupName="atributes">
+                                <td formArrayName="history"
+                                    *ngFor=" let valueHistory of getAtributesProjection(projectionIndex,'history').value;">
+                                    <div>
+                                        {{valueHistory | number : '1.2-2'}}
+                                    </div>
+                                </td>
+                                <td
+                                    *ngFor=" let input of getAtributesProjection(projectionIndex,'projection').controls; index as i">
+                                    <div formArrayName="projection">
+                                        <fieldset [disabled]=" (projection.value.method=='Valor constante' ||
+                                    projection.value.method=='Porcentaje de otra variable' ||
+                                    projection.value.method=='Cero' ) ? true:false">
+                                            <input formControlName="{{ i }}" type="number" class="form-control" />
+                                        </fieldset>
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <td>
+                                <textarea class="form-control" formControlName="explication" rows="1"></textarea>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </form>
+    <div class="d-flex justify-content-end">
+        <button class="btn btn-primary" [disabled]="projectionForm.invalid" (click)="save()">Guardar</button>
+    </div>
+</div>
